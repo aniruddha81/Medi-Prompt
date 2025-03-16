@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base theme for all API levels -->
     <style name="Theme.MediPrompt" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="android:windowSplashScreenBackground">@color/splash_background</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/medical_time</item>
-        <item name="postSplashScreenTheme">@style/Theme.MediPrompt</item>
+        <item name="android:windowSplashScreenAnimationDuration">500</item>
     </style>
 </resources>

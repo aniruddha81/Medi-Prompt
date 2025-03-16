@@ -5,10 +5,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -20,20 +19,18 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.aniruddha81.mediprompt.models.NavItem
+import com.aniruddha81.mediprompt.pages.AiAsst
 import com.aniruddha81.mediprompt.pages.HomePage
-import com.aniruddha81.mediprompt.pages.NotificationPage
-import com.aniruddha81.mediprompt.pages.SettingsPage
+import com.aniruddha81.mediprompt.pages.Profile
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
 
-
     val navItemList = listOf(
-        NavItem("Home", Icons.Default.Home,0),
-        NavItem("Notification", Icons.Default.Notifications,5),
-        NavItem("Settings", Icons.Default.Settings,0),
+        NavItem("Home", Icons.Default.Home, 0),
+        NavItem("Ai Assistant", Icons.Default.Notifications, 5),
+        NavItem("Profile", Icons.Default.Person, 0),
     )
 
     var selectedIndex by remember {
@@ -77,9 +74,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
 @Composable
 fun ContentScreen(modifier: Modifier = Modifier, selectedIndex : Int) {
     when(selectedIndex){
-        0-> HomePage()
-        1-> NotificationPage()
-        2-> SettingsPage()
+        0-> HomePage(modifier)
+        1-> AiAsst(modifier)
+        2-> Profile(modifier)
     }
 }
 

@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun NotificationPage(modifier: Modifier = Modifier) {
+fun Profile(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -22,7 +22,7 @@ fun NotificationPage(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Notification Page",
+            text = "Settings Page",
             fontSize = 40.sp,
             fontWeight = FontWeight.SemiBold,
             color = Color.White
