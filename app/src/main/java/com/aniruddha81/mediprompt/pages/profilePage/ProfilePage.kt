@@ -1,4 +1,4 @@
-package com.aniruddha81.mediprompt.pages
+package com.aniruddha81.mediprompt.pages.profilePage
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +22,7 @@ fun Profile(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Settings Page",
+            text = "Profile Page",
             fontSize = 40.sp,
             fontWeight = FontWeight.SemiBold,
             color = Color.White

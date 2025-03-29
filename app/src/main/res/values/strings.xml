@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Medi Prompt</string>
+    <string name="pick_time">Pick a time</string>
+    <string name="cancel">Cancel</string>
+    <string name="create_a_alarm">Create a alarm</string>
+    <string name="reminder">Alarms &amp; Reminders</string>
+    <string name="reminder_channel_desc">This is required to send a notification when alarm is set</string>
+    <string name="permission_denied">Permission denied!</string>
+    <string name="ok">OK</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="close">Close</string>
+    <string name="request_msg"><![CDATA[To send a notification when alarm is triggered allow AlarmManager to send a notification. Tap Settings > Permissions, and turn Notifications on.]]></string>
+    <string name="settings">Settings</string>
+    <string name="msg_missing_field">Fields are missing</string>
+    <string name="alarm_title">Alarm Title</string>
+    <string name="alarm_message">Alarm Message</string>
+    <string name="stop">STOP</string>
 </resources>

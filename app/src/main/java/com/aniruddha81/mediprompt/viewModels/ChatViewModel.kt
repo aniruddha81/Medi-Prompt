@@ -31,9 +31,8 @@ class ChatViewModel : ViewModel() {
                 val response = chat.sendMessage(question)
                 val responseText = response.text ?: "No response"
 
-                if (messageList.isNotEmpty()) {
-                    messageList.removeAt(messageList.lastIndex) // Remove "Typing..."
-                }
+                messageList.removeAt(messageList.lastIndex) // Remove "Typing..."
+
                 messageList.add(MessageModel(responseText, "model"))
 
             } catch (e: Exception) {
