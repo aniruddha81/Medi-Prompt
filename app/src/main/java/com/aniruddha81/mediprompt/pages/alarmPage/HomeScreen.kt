@@ -1,6 +1,7 @@
 package com.aniruddha81.mediprompt.pages.alarmPage
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -46,12 +47,12 @@ fun HomeScreen(
                 )
             }
         }
-    ) { innerPadding ->
+    ) { _ ->
         // Using Column instead of Box to properly arrange elements vertically
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding) // Apply scaffold padding to the Column
+                .padding(top = 16.dp)
         ) {
             // Simple title bar with just the app name
             Text(
@@ -62,13 +63,13 @@ fun HomeScreen(
                 color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .fillMaxWidth().padding(bottom = 20.dp)
+                    .fillMaxWidth().padding(bottom = 18.dp)
             )
 
             // Alarm list below the title
             AlarmScreen(
                 viewModel = viewModel,
-                paddingValues = androidx.compose.foundation.layout.PaddingValues(0.dp)
+                paddingValues = PaddingValues(0.dp)
             )
         }
 

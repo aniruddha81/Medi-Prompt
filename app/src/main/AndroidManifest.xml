@@ -31,6 +31,11 @@
             android:name=".receiver.AlarmReceiver"
             android:enabled="true"
             android:exported="false" />
+
+        <!-- Register the AlarmDeleteService to handle deleting alarms -->
+        <service
+            android:name=".services.AlarmDeleteService"
+            android:exported="false" />
     </application>
 
 </manifest>

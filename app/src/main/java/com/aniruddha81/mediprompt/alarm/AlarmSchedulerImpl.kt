@@ -34,7 +34,12 @@ class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
     }
 
     override fun cancel(alarm: Alarm) {
-        val intent = Intent(context, AlarmReceiver::class.java)
+        // Important: Intent must contain the same extras as when it was created
+        val intent = Intent(context, AlarmReceiver::class.java).apply {
+            putExtra(TITLE, alarm.title)
+            putExtra(MESSAGE, alarm.message)
+            putExtra(ALARM_ID, alarm.id)
+        }
         val pendingIntent = PendingIntent.getBroadcast(
             context,
             alarm.hashCode(),
@@ -42,5 +47,7 @@ class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
         alarmManager.cancel(pendingIntent)
+        // Also cancel the pending intent itself to clean up resources
+        pendingIntent.cancel()
     }
 }

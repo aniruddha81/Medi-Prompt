@@ -2,6 +2,8 @@ package com.aniruddha81.mediprompt.di
 
 import android.content.Context
 import androidx.room.Room
+import com.aniruddha81.mediprompt.alarm.AlarmScheduler
+import com.aniruddha81.mediprompt.alarm.AlarmSchedulerImpl
 import com.aniruddha81.mediprompt.data.local.AlarmDao
 import com.aniruddha81.mediprompt.data.local.AlarmDatabase
 import com.aniruddha81.mediprompt.data.repository.AlarmRepoImpl
@@ -35,5 +37,11 @@ object AlarmDiModule {
     @Singleton
     fun providesAlarmRepository(alarmDao: AlarmDao): AlarmRepository {
         return AlarmRepoImpl(alarmDao)
+    }
+
+    @Provides
+    @Singleton
+    fun providesAlarmScheduler(@ApplicationContext context: Context): AlarmScheduler {
+        return AlarmSchedulerImpl(context)
     }
 }
