@@ -1,26 +1,29 @@
 [versions]
-agp = "8.9.1"
+agp = "8.11.0"
 coreSplashscreen = "1.0.1"
 generativeai = "0.9.0"
-hiltAndroid = "2.56.1"
+hiltAndroid = "2.56.2"
 hiltNavigationCompose = "1.2.0"
+# don't update this kotlin version.otherwise it will break the app
 kotlin = "2.1.10"
-coreKtx = "1.15.0"
+coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.7"
+lifecycleRuntimeKtx = "2.9.1"
 activityCompose = "1.10.1"
-composeBom = "2025.03.01"
-navigationCompose = "2.8.9"
-roomRuntime = "2.6.1"
-sdkForAndroid = "7.0.0"
+composeBom = "2025.06.01"
+materialIconsExtended = "1.7.8"
+navigationCompose = "2.9.1"
+roomRuntime = "2.7.2"
+sdkForAndroid = "8.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }

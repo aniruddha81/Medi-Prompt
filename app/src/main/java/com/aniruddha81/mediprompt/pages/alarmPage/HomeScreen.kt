@@ -1,14 +1,22 @@
 package com.aniruddha81.mediprompt.pages.alarmPage
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.aniruddha81.mediprompt.alarm.AlarmSchedulerImpl
 import com.aniruddha81.mediprompt.models.Alarm
 import com.aniruddha81.mediprompt.viewModels.AlarmActivityViewModel
@@ -18,7 +26,7 @@ import com.aniruddha81.mediprompt.viewModels.AlarmActivityViewModel
 fun HomeScreen(
     modifier: Modifier,
     viewModel: AlarmActivityViewModel,
-    alarmSchedulerImpl : AlarmSchedulerImpl
+    alarmSchedulerImpl: AlarmSchedulerImpl
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -27,29 +35,55 @@ fun HomeScreen(
                 onClick = {
                     viewModel.showAlertDialog.value = true
                 },
-//                        shape = TODO(),
-//                        containerColor = TODO(),
-//                        contentColor = TODO(),
-//                        elevation = TODO(),
-//                        interactionSource = TODO()
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add Alarm"
+                    contentDescription = "Add Medication Reminder"
                 )
             }
         }
     ) { innerPadding ->
-        AlarmScreen(viewModel, innerPadding)
-        AddAlarmDialog(viewModel) {title, message, timeInMillis ->
-            val alarm = Alarm(
-                title = title,
-                message = message,
-                scheduleAt = timeInMillis,
+        // Using Column instead of Box to properly arrange elements vertically
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding) // Apply scaffold padding to the Column
+        ) {
+            // App title at the top
+            Text(
+                text = "Medi-Prompt",
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+                color = MaterialTheme.colorScheme.primary,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
             )
-            viewModel.insertAlarm(alarm)
-            alarmSchedulerImpl.schedule(alarm)
 
+            // Alarm list below the title - pass empty padding since we already handled it
+            AlarmScreen(
+                viewModel = viewModel,
+                paddingValues = androidx.compose.foundation.layout.PaddingValues(0.dp)
+            )
+        }
+
+        // Dialog for adding alarms
+        AddAlarmDialog(viewModel) { title, message, timeInMillis ->
+            val currentTime = System.currentTimeMillis()
+            if (timeInMillis <= currentTime) {
+                // Time is in the past, handle error case if needed
+            } else {
+                val alarm = Alarm(
+                    title = title,
+                    message = message,
+                    scheduleAt = timeInMillis,
+                )
+                viewModel.insertAlarm(alarm)
+                alarmSchedulerImpl.schedule(alarm)
+            }
         }
     }
 }

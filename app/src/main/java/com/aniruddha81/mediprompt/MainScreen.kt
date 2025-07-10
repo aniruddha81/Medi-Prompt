@@ -6,15 +6,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -35,9 +32,9 @@ import com.aniruddha81.mediprompt.viewModels.AlarmActivityViewModel
 fun MainScreen(modifier: Modifier = Modifier) {
 
     val navItemList = listOf(
-        NavItem("Home", Icons.Default.Home, 0),
-        NavItem("Ai Assistant", Icons.Default.Notifications, 5),
-        NavItem("Profile", Icons.Default.Person, 0),
+        NavItem("Home", Icons.Default.Home),
+        NavItem("Ai Assistant", Icons.Default.Notifications),
+        NavItem("Profile", Icons.Default.Person),
     )
 
     var selectedIndex by remember {
@@ -46,11 +43,6 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = { if (selectedIndex == 0) Text("Alarms") },
-            )
-        },
         bottomBar = {
             NavigationBar {
                 navItemList.forEachIndexed { index, navItem ->
@@ -60,15 +52,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                             selectedIndex = index
                         },
                         icon = {
-                            BadgedBox(badge = {
-                                if (navItem.badgeCount > 0)
-                                    Badge {
-                                        Text(text = navItem.badgeCount.toString())
-                                    }
-                            }) {
-                                Icon(imageVector = navItem.icon, contentDescription = "Icon")
-                            }
-
+                            Icon(imageVector = navItem.icon, contentDescription = "Icon")
                         },
                         label = {
                             Text(text = navItem.label)
