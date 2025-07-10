@@ -66,8 +66,8 @@ fun AddAlarmDialog(
             })
         }
 
-        // Recreate the time picker when needed with current calendar value
-        val timePickerDialog = remember(calendar) {
+        // Create the time picker dialog with proper dismissal handling
+        val timePickerDialog = remember {
             TimePickerDialog(
                 context,
                 { _, selectedHour, selectedMinute ->
@@ -76,19 +76,25 @@ fun AddAlarmDialog(
                         set(Calendar.MINUTE, selectedMinute)
                         set(Calendar.SECOND, 0)
                     }
-                    showTimePicker = false
                 },
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
                 DateFormat.is24HourFormat(context)
-            )
+            ).apply {
+                // Add an OnDismissListener to reset the showTimePicker state
+                setOnDismissListener {
+                    showTimePicker = false
+                }
+            }
         }
 
         // Launch time picker when showTimePicker becomes true
         LaunchedEffect(showTimePicker) {
             if (showTimePicker) {
                 Handler(Looper.getMainLooper()).post {
-                    timePickerDialog.show()
+                    if (!timePickerDialog.isShowing) {
+                        timePickerDialog.show()
+                    }
                 }
             }
         }
@@ -96,7 +102,9 @@ fun AddAlarmDialog(
         // Clean up resources when dialog is dismissed
         DisposableEffect(Unit) {
             onDispose {
-                timePickerDialog.dismiss()
+                if (timePickerDialog.isShowing) {
+                    timePickerDialog.dismiss()
+                }
             }
         }
 

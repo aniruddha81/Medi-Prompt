@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,7 +41,8 @@ fun HomeScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add Medication Reminder"
+                    contentDescription = "Add Medication Reminder",
+                    modifier = Modifier.size(24.dp)
                 )
             }
         }
@@ -51,7 +53,7 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(innerPadding) // Apply scaffold padding to the Column
         ) {
-            // App title at the top
+            // Simple title bar with just the app name
             Text(
                 text = "Medi-Prompt",
                 style = MaterialTheme.typography.headlineMedium.copy(
@@ -60,10 +62,10 @@ fun HomeScreen(
                 color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth().padding(bottom = 20.dp)
             )
 
-            // Alarm list below the title - pass empty padding since we already handled it
+            // Alarm list below the title
             AlarmScreen(
                 viewModel = viewModel,
                 paddingValues = androidx.compose.foundation.layout.PaddingValues(0.dp)
