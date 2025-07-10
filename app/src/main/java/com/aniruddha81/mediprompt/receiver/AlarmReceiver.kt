@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -23,55 +24,97 @@ import com.aniruddha81.mediprompt.R
 import com.aniruddha81.mediprompt.services.AlarmDeleteService
 
 class AlarmReceiver : BroadcastReceiver() {
+
+    // Static companion object to hold the active MediaPlayer
+    companion object {
+        private var activeMediaPlayer: MediaPlayer? = null
+
+        fun stopAlarmSound() {
+            try {
+                activeMediaPlayer?.apply {
+                    if (isPlaying) {
+                        stop()
+                    }
+                    release()
+                }
+                activeMediaPlayer = null
+                Log.d("AlarmReceiver", "Alarm sound stopped")
+            } catch (e: Exception) {
+                Log.e("AlarmReceiver", "Error stopping sound: ${e.message}")
+            }
+        }
+    }
+
     override fun onReceive(context: Context?, intent: Intent?) {
         val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        val mediaPlayer = MediaPlayer.create(context, Settings.System.DEFAULT_ALARM_ALERT_URI)
-        mediaPlayer.isLooping = true
-
+        // Handle the stop action immediately without creating a new MediaPlayer
         if (intent?.action == STOP_ALARM) {
             val alarmId = intent.getLongExtra(ALARM_ID, -1L)
+            Log.d("AlarmReceiver", "Stop button clicked for alarm ID: $alarmId")
+
+            // Cancel the notification
             NotificationManagerCompat.from(context).cancel(alarmId.toInt())
 
-            // Stop the media player
-            mediaPlayer.release()
-            mediaPlayer.stop()
+            // Stop the alarm sound using our companion method
+            stopAlarmSound()
 
             // Cancel the alarm in AlarmManager
             val cancelIntent = Intent(context, AlarmReceiver::class.java)
-            val pIntent =
-                PendingIntent.getBroadcast(context, alarmId.toInt(), cancelIntent, PendingIntent.FLAG_IMMUTABLE)
+            val pIntent = PendingIntent.getBroadcast(
+                context,
+                alarmId.toInt(),
+                cancelIntent,
+                PendingIntent.FLAG_IMMUTABLE
+            )
             alarmManager.cancel(pIntent)
 
-            // Start the service to delete the alarm from the database
+            // Delete the alarm from database via service
             val deleteServiceIntent = Intent(context, AlarmDeleteService::class.java).apply {
                 putExtra(ALARM_ID, alarmId)
+                // Add flags to keep app open
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startService(deleteServiceIntent)
 
             return
         }
 
+        // This is a new alarm, not a stop action
         val title = intent?.getStringExtra(TITLE) ?: return
         val message = intent.getStringExtra(MESSAGE)
         val alarmId = intent.getLongExtra(ALARM_ID, 1L)
 
+        // Create and start a new MediaPlayer for this alarm
+        try {
+            // First stop any existing alarm sound
+            stopAlarmSound()
+
+            // Create a new MediaPlayer
+            activeMediaPlayer = MediaPlayer.create(context, Settings.System.DEFAULT_ALARM_ALERT_URI).apply {
+                isLooping = true
+                start()
+            }
+            Log.d("AlarmReceiver", "Started alarm sound for ID: $alarmId")
+        } catch (e: Exception) {
+            Log.e("AlarmReceiver", "Error playing sound: ${e.message}")
+        }
+
+        // Create the notification with action
         val goIntent = Intent(context, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }  // this intent will be used to open the app when the notification is clicked
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
 
-        val goPendingIntent =
-            PendingIntent.getActivity(context, 0, goIntent, PendingIntent.FLAG_IMMUTABLE)
+        val goPendingIntent = PendingIntent.getActivity(context, 0, goIntent, PendingIntent.FLAG_IMMUTABLE)
 
-        // Create intent for the stop button
         val stopIntent = Intent(context, AlarmReceiver::class.java).apply {
             action = STOP_ALARM
             putExtra(ALARM_ID, alarmId)
-        }     // this intent will be used to stop the alarm
+        }
 
         val stopPendingIntent = PendingIntent.getBroadcast(
             context,
-            alarmId.toInt(),  // Use alarmId as the request code for uniqueness
+            alarmId.toInt(),
             stopIntent,
             PendingIntent.FLAG_IMMUTABLE
         )
@@ -88,10 +131,9 @@ class AlarmReceiver : BroadcastReceiver() {
             )
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setAutoCancel(true)
+            .setAutoCancel(false)  // Don't auto-cancel to ensure user sees the notification
             .build()
 
-        mediaPlayer.start()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(

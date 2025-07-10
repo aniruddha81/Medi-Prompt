@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import com.aniruddha81.mediprompt.Constants.ALARM_ID
-import com.aniruddha81.mediprompt.Constants.ALARM_DELETED_ACTION
 import com.aniruddha81.mediprompt.data.repository.AlarmRepository
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -43,15 +42,15 @@ class AlarmDeleteService : Service() {
         serviceScope.launch {
             try {
                 Log.d("AlarmDeleteService", "Deleting alarm with ID: $alarmId")
+
+                // Delete the alarm from the repository
                 alarmRepository.deleteAlarmById(alarmId)
 
-                // Broadcast that the alarm was deleted so the UI can update
-                val intent = Intent(ALARM_DELETED_ACTION).apply {
-                    putExtra(ALARM_ID, alarmId)
-                }
-                sendBroadcast(intent)
+                // Instead of broadcasting, directly notify the ViewModel
+                // The ViewModel observes the Flow from repository, so it will
+                // automatically update when data changes
 
-                Log.d("AlarmDeleteService", "Alarm deleted successfully, broadcast sent")
+                Log.d("AlarmDeleteService", "Alarm deleted successfully")
             } catch (e: Exception) {
                 Log.e("AlarmDeleteService", "Error deleting alarm: ${e.message}")
             } finally {
