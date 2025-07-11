@@ -73,7 +73,7 @@ Medi-Prompt follows the Model-View-ViewModel (MVVM) architectural pattern, which
 - **Business Logic**: Handling data operations and UI state management
 
 ### Dependency Injection
-- Used Hilt for dependency injection (`AlarmDiModule.kt`)
+- Used Dagger Hilt for dependency injection (`AlarmDiModule.kt`)
 - Provides singleton instances for repositories, database, and other dependencies
 
 ### Background Processing
@@ -112,7 +112,7 @@ Medi-Prompt follows the Model-View-ViewModel (MVVM) architectural pattern, which
 - **UI Framework**: Jetpack Compose
 - **Architecture**: MVVM (Model-View-ViewModel)
 - **Database**: Room Persistence Library
-- **Dependency Injection**: Hilt
+- **Dependency Injection**: Dagger Hilt
 - **Concurrency**: Kotlin Coroutines & Flow
 - **Scheduling**: Android AlarmManager
 - **Animation**: Jetpack Compose Animation APIs
