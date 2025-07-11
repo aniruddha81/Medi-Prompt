@@ -132,10 +132,14 @@ com.aniruddha81.mediprompt/
 │   ├── alarmPage/             # Alarm/reminder page components
 │   └── profilePage/           # User profile page components
 ├── receiver/                  # Broadcast receivers for alarms
+├── services/                  # Application services
 ├── ui/                        # Theme and styling
 │   └── theme/
 ├── viewModels/                # ViewModels for each feature
-└── MainActivity.kt            # Entry point of the application
+├── AlarmApp.kt                # Application class
+├── Constants.kt               # App-wide constants
+├── MainActivity.kt            # Entry point of the application
+└── MainScreen.kt              # Main navigation container
 ```
 
 ## 🚀 Getting Started
