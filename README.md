@@ -23,8 +23,8 @@ Medi-Prompt is a modern Android application designed to help users manage their 
 
 <p align="center">
   <img src="screenshots/home_page_without_reminder.png" alt="Home Page" width="250"/>
-  <img src="screenshots/time_picker.png" alt="Time Picker" width="250"/>
   <img src="screenshots/create_reminder_dialog.png" alt="Create Reminder" width="250"/>
+  <img src="screenshots/time_picker.png" alt="Time Picker" width="250"/>
 </p>
 
 <p align="center">
